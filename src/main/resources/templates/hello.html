@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="http://rubaxa.github.io/Sortable/Sortable.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        /*<![CDATA[*/
+        window.onload = function(){
+            var list = document.getElementById("liste");
+            Sortable.create(list,{
+                onUpdate: function(evt){
+                    console.log(evt);
+                    var lis = document.getElementsByTagName("li");
+                    json = new Array();
+                    for(i = 0; i < lis.length; i++){
+                        console.log(lis[i]);
+                        person = new Object();
+                        person.fornavn = lis[i].textContent;
+                        person.sortering = i;
+                        json.push(person);
+                    }
+
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.onreadystatechange = function(){
+                        if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                            console.log(xmlHttp.responseText);
+                        }
+                    }
+                    xmlHttp.open("POST", "/save", true);
+                    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xmlHttp.send(JSON.stringify(json));
+                }
+            });
+        }
+
+        /*]]>*/
+    </script>
+
+</head>
+<body>
+<ul id="liste">
+    <li th:each="p : ${liste}" th:text="${p.fornavn}" id=""/>
+</ul>
+</body>
+</html>
