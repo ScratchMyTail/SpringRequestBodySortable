@@ -32,7 +32,6 @@ public class WebController {
     public @ResponseBody String save(@RequestBody List<Person> personList){
         for(Person person : personList){
             System.out.println(person.getSortering()+" - "+person.getFornavn());
-            repository.save(person);
         }
         return "saved";
     }
